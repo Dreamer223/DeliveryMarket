@@ -1,0 +1,9 @@
+package ru.dreamer.deliveryservice.repository;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import ru.dreamer.deliveryservice.entity.Product;
+
+@Repository
+public interface ProductRepository extends CrudRepository<Product, Long> {
+}
