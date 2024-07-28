@@ -4,14 +4,14 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record NewProductPayload(
-        @NotNull(message = "Name cannot be null")
-        @Size(min = 3, message = "Name must be at least 3 characters long")
+        @NotNull(message = "{Не должно быть пустым полем названия}")
+        @Size(min = 3, message = "{Не может быть меньше трех символов}")
         String name,
-        @NotNull(message = "Category cannot be null")
-        @Size(min = 2, message = "Category must be at least 3 characters long")
+        @NotNull(message = "{Не должно быть пустым полем категории}")
+        @Size(min = 2, message = "{не может быть меньше двух символов}")
         String category,
         String description,
-        @NotNull(message = "Price cannot be null")
+        @NotNull(message = "{Не должно быть пустым полем цены}")
         Double price
 ) {
 }

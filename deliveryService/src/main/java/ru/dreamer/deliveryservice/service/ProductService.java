@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface ProductService {
 
-    Iterable<Product> findAll();
+    Iterable<Product> findAll(String filter);
     Product save(String name, String category, String description, Double price);
     Optional<Product> findById(Long id);
     void deleteById(Long id);

@@ -11,6 +11,8 @@ import ru.dreamer.deliveryservice.controller.payload.NewProductPayload;
 import ru.dreamer.deliveryservice.entity.Product;
 import ru.dreamer.deliveryservice.service.ProductService;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/products")
@@ -18,11 +20,11 @@ public class ProductsRestController {
     private final ProductService productService;
 
     @GetMapping
-    public Iterable<Product> findAll() {
-        return this.productService.findAll();
+    public Iterable<Product> findAll(@RequestParam(name = "filter", required = false) String filter) {
+        return this.productService.findAll(filter);
     }
     @PostMapping
-    public ResponseEntity<Product> save(@Valid @RequestBody NewProductPayload payload,
+    public ResponseEntity<?> save(@Valid@RequestBody NewProductPayload payload,
                                         BindingResult bindingResult,
                                         UriComponentsBuilder uriComponentsBuilder) throws BindException {
         if(bindingResult.hasErrors()) {
@@ -32,13 +34,12 @@ public class ProductsRestController {
                 throw new BindException(bindingResult);
             }
         }else {
-            Product product = this.productService.save(payload.name(), payload.category(), payload.description(),
-                    payload.price());
+            Product product = this.productService.save(payload.name(), payload.category(),
+                    payload.description(), payload.price());
             return ResponseEntity
                     .created(uriComponentsBuilder
-                            .path("/api/products/{id}")
-                            .buildAndExpand(product.getId())
-                            .toUri())
+                            .replacePath("/api/products/{id}")
+                            .build(Map.of("id",product.getId())))
                     .body(product);
         }
 

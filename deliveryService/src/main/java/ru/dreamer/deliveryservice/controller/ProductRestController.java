@@ -35,7 +35,7 @@ public class ProductRestController {
         return product;
     }
 
-    @PatchMapping
+    @PostMapping
     public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id,
                                                  @Valid @RequestBody UpdateProductPayload payload,
                                                  BindingResult bindingResult) throws BindException {

@@ -4,6 +4,11 @@ spring:
     username: delivery
     password: delivery
     driver-class-name: org.postgresql.Driver
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/delivery
   liquibase:
     change-log: db/changelog/db.changelog-master.yaml
     enabled: true
