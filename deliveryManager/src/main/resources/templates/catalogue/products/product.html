@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a data-th-href="@{/catalogue/products}">&larr; К списку товаров</a>
+<h1 data-th-text="${product.name}"></h1>
+<ul>
+    <li><strong>ID</strong>: <span data-th-text="${product.id}"></span></li>
+    <li><strong>Название</strong>: <span data-th-text="${product.name}"></span></li>
+    <li><strong>Категория</strong>: <span data-th-text="${product.category}"></span></li>
+    <li><strong>Описание</strong>: <span data-th-text="${product.description}"></span></li>
+    <li><strong>Цена</strong>: <span data-th-text="${product.price} + ' $'"></span></li>
+
+</ul>
+<a data-th-href="@{/catalogue/products/{productId}/edit(productId=${product.id})}">Изменить</a>
+<form method="post" data-th-action="@{/catalogue/products/{productId}/delete(productId=${product.id})}">
+    <button type="submit">Удалить</button>
+</form>
+</body>
+</html>

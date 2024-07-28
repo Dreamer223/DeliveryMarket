@@ -1,0 +1,25 @@
+dreamer:
+    delivery:
+        service:
+            uri: http://localhost:8081
+            client-id: keycloak
+server:
+    port: 8080
+spring:
+  security:
+    oauth2:
+      client:
+          provider:
+            keycloak:
+                issuer-uri: http://localhost:8082/realms/delivery
+                user-name-attribute: preferred_username
+          registration:
+              keycloak:
+                  client-id: delivery-market
+                  client-secret: Far30AtwzWsyZNebecuyqYZn8QlWcQAy
+                  scope:
+                    - openid
+                    - view_catalogue
+                    - edit_catalogue
+                    - microprofile-jwt
+
