@@ -12,6 +12,6 @@ public record NewProductReviewPayload(
         @Min(value = 1, message = "{feedback.product.review.rating.min.value}")
         @Max(value = 5, message = "{feedback.product.review.rating.max.value}")
         Integer rating,
-        @Size(max = 1000, message = "{feedback.product.review.text.max.length}")
-        String text) {
+        @Size(max = 1000, message = "{feedback.product.review.review.max.length}")
+        String review) {
 }

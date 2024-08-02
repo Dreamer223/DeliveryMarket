@@ -13,13 +13,14 @@ import java.util.UUID;
 public class DefaultProductReviewsService implements ProductReviewsService {
 
     private final ProductReviewRepository productReviewRepository;
-    @Override
-    public Mono<ProductReview> createProductReview(Long productId, Integer rating, String text) {
-        return productReviewRepository.save(new ProductReview(UUID.randomUUID(), productId, rating, text));
-    }
 
     @Override
     public Flux<ProductReview> findAllProductReviewsByProductId(Long productId) {
         return productReviewRepository.findAllByProductId(productId);
+    }
+
+    @Override
+    public Mono<ProductReview> createProductReview(Long productId, Integer rating, String text,String userId) {
+        return productReviewRepository.save(new ProductReview(UUID.randomUUID(), productId, rating, text, userId));
     }
 }

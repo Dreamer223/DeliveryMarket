@@ -7,5 +7,5 @@ import ru.dreamer.deliveryclient.entity.ProductReview;
 public interface ProductReviewsClient {
 
     Flux<ProductReview> findProductReviewsByProductId(Long productId);
-    Mono<ProductReview> createProductReview(Long productId, Integer rating, String text);
+    Mono<ProductReview> createProductReview(Long productId, Integer rating, String review);
 }

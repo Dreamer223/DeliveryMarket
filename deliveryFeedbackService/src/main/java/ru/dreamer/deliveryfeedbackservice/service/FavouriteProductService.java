@@ -6,10 +6,10 @@ import ru.dreamer.deliveryfeedbackservice.entity.FavouriteProduct;
 
 public interface FavouriteProductService {
 
-    Mono<FavouriteProduct> addFavouriteProduct(Long productId);
+    Mono<FavouriteProduct> addFavouriteProduct(Long productId,String userId);
 
-    Mono<Void> removeFavouriteProduct(Long productId);
+    Mono<Void> removeFavouriteProduct(Long productId,String userId);
 
-    Flux<FavouriteProduct> findFavouriteProducts();
-    Mono<FavouriteProduct> findFavouriteProductByProductId(Long productId);
+    Flux<FavouriteProduct> findFavouriteProducts(String userId);
+    Mono<FavouriteProduct> findFavouriteProductByProductId(Long productId, String userId);
 }

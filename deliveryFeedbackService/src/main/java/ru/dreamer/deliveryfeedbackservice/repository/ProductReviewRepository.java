@@ -1,12 +1,12 @@
 package ru.dreamer.deliveryfeedbackservice.repository;
 
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import ru.dreamer.deliveryfeedbackservice.entity.ProductReview;
 
-public interface ProductReviewRepository {
+import java.util.UUID;
 
-    Mono<ProductReview> save(ProductReview productReview);
+public interface ProductReviewRepository extends ReactiveCrudRepository<ProductReview, UUID> {
 
     Flux<ProductReview> findAllByProductId(Long productId);
 }

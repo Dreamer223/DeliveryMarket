@@ -1,7 +1,9 @@
 package ru.dreamer.deliveryclient.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ProblemDetail;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Flux;
@@ -10,6 +12,7 @@ import ru.dreamer.deliveryclient.client.exception.ClientBadRequestException;
 import ru.dreamer.deliveryclient.client.payload.NewFavouriteProductPayload;
 import ru.dreamer.deliveryclient.entity.FavouriteProduct;
 
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -43,10 +46,17 @@ public class WebClientFavouritesProductClient implements FavouritesProductClient
                 .bodyValue(new NewFavouriteProductPayload(productId))
                 .retrieve()
                 .bodyToMono(FavouriteProduct.class)
-                .onErrorMap(WebClientResponseException.BadRequest.class,
-                        exception -> new ClientBadRequestException(exception,
-                                ((List<String>) exception.getResponseBodyAs(ProblemDetail.class)
-                                        .getProperties().get("errors"))));
+                .onErrorMap(WebClientResponseException.BadRequest.class, ex -> {
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        JsonNode root = mapper.readTree(ex.getResponseBodyAsString());
+                        JsonNode errorsNode = root.path("errors");
+                        List<String> errors = mapper.convertValue(errorsNode, new TypeReference<>() { });
+                        return new ClientBadRequestException(ex, errors);
+                    } catch (Exception e) {
+                        return new ClientBadRequestException(ex, Collections.emptyList());
+                    }
+                });
     }
 
     @Override

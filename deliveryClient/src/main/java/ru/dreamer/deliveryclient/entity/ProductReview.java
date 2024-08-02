@@ -5,5 +5,5 @@ import java.util.UUID;
 public record ProductReview(UUID id,
                             Long productId,
                             Integer rating,
-                            String text) {
+                            String review) {
 }

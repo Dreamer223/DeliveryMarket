@@ -1,15 +1,15 @@
 package ru.dreamer.deliveryfeedbackservice.repository;
 
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.dreamer.deliveryfeedbackservice.entity.FavouriteProduct;
 
-public interface FavouriteProductRepository {
-    Mono<FavouriteProduct> save(FavouriteProduct favouriteProduct);
+public interface FavouriteProductRepository extends ReactiveCrudRepository<FavouriteProduct, Integer> {
 
-    Mono<Void> deleteByProductId(Long productId);
+    Mono<Void> deleteByProductIdAndUserId(Long productId,String userId);
 
-    Mono<FavouriteProduct> findByProductId(Long productId);
+    Flux<FavouriteProduct> findAllByUserId(String userId);
 
-    Flux<FavouriteProduct> findAll();
+    Mono<FavouriteProduct> findByProductIdAndUserId(Long productId, String userId);
 }

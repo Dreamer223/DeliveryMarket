@@ -1,11 +1,30 @@
 spring:
   application:
     name: deliveryClient
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: customer-app
+            client-secret: Cxz8XKxCgOpc1NFljqLFY7wnlLKymOrm
+            scope:
+              - openid
+              - view_catalogue
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8082/realms/delivery
+            user-name-attribute: preferred_username
+
 server:
   port: 8083
 dreamer:
   delivery:
     service:
       uri: http://localhost:8081
-      feedback:
-        uri: http://localhost:8084
+
+feedback:
+  service:
+    uri: http://localhost:8084
+    reviews:
+      uri: http://localhost:8084/feedback-api/productReviews

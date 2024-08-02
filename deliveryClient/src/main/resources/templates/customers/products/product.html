@@ -33,17 +33,17 @@
         <label><input type="radio" name="rating" value="2"> 2</label>
         <label><input type="radio" name="rating" value="3"> 3</label>
         <label><input type="radio" name="rating" value="4"> 4</label>
-        <label><input type="radio" name="rating" value="5"> 5</label>
+        <label><input type="radio" name="rating" value="5" checked> 5</label>
         <br>
         <label>
             Отзыв:<br>
-            <textarea name="text"></textarea>
+            <textarea name="review" data-th-text="${payload?.review}"></textarea>
         </label><br>
         <button type="submit">Отправить отзыв</button>
     </form>
     <div data-th-each="review : ${reviews}">
         <h3>[[${review.rating}]]*</h3>
-        <p data-th-text="${review.text}"></p>
+        <p data-th-text="${review.review}"></p>
     </div>
 </body>
 </html>
