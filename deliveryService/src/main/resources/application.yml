@@ -10,7 +10,7 @@ spring:
         jwt:
           issuer-uri: http://localhost:8082/realms/delivery
   liquibase:
-    change-log: db/changelog/db.changelog-master.yaml
+    change-log: db/changelog/db.changelog-master.yml
     enabled: true
 server:
   port: 8081
