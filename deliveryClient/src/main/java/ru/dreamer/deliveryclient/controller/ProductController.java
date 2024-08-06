@@ -2,8 +2,8 @@ package ru.dreamer.deliveryclient.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.security.web.reactive.result.view.CsrfRequestDataValueProcessor;
+import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 import ru.dreamer.deliveryclient.client.FavouritesProductClient;
 import ru.dreamer.deliveryclient.client.ProductReviewsClient;
 import ru.dreamer.deliveryclient.client.ProductsClient;
+import ru.dreamer.deliveryclient.client.ShoppingCartClient;
 import ru.dreamer.deliveryclient.client.exception.ClientBadRequestException;
 import ru.dreamer.deliveryclient.controller.payload.NewProductReviewPayload;
 import ru.dreamer.deliveryclient.entity.Product;
@@ -28,6 +29,7 @@ public class ProductController {
     private final ProductsClient productsClient;
     private final FavouritesProductClient favouritesProductClient;
     private final ProductReviewsClient productReviewsClient;
+    private final ShoppingCartClient shoppingCartClient;
 
     @ModelAttribute(name = "product", binding = false)
     public Mono<Product> loadProduct(@PathVariable("productId") Long productId) {
@@ -38,11 +40,14 @@ public class ProductController {
     @GetMapping
     public Mono<String> getProductPage(@PathVariable("productId") Long productId, Model model) {
         model.addAttribute("inFavourite", false);
+        model.addAttribute("inCart", false);
         return this.productReviewsClient.findProductReviewsByProductId(productId)
                 .collectList()
                 .doOnNext(productReviews -> model.addAttribute("reviews", productReviews))
                 .then(this.favouritesProductClient.findFavouriteProductByProductId(productId)
                         .doOnNext(favouriteProduct -> model.addAttribute("inFavourite", true)))
+                .then(this.shoppingCartClient.findByProductId(productId)
+                        .doOnNext(shoppingCart -> model.addAttribute("inCart", true)))
                 .thenReturn("customers/products/product");
 
     }
@@ -82,7 +87,25 @@ public class ProductController {
                             .thenReturn("customer/products/product");
                 });
     }
+    @PostMapping("add-to-cart")
+    public Mono<String> addProductToShoppingCart(@ModelAttribute("product") Mono<Product> productMono) {
+        return productMono
+                .map(Product::id)
+                .flatMap(id -> this.shoppingCartClient.addProductToShoppingCart(id)
+                        .thenReturn("redirect:/products/%d".formatted(id))
+                        .onErrorResume(exception -> {
+                            log.error(exception.getMessage(), exception);
+                            return Mono.just("redirect:/products/%d".formatted(id));
+                        }));
 
+    }
+    @PostMapping("remove-from-cart")
+    public Mono<String> removeFromShoppingCart(@ModelAttribute("product") Mono<Product> productMono) {
+        return productMono
+                .map(Product::id)
+                .flatMap(id -> this.shoppingCartClient.removeProductFromShoppingCart(id)
+                        .thenReturn("redirect:/products/%d".formatted(id)));
+    }
 
 
     @ExceptionHandler(NoSuchElementException.class)
@@ -97,6 +120,7 @@ public class ProductController {
                 .doOnSuccess(token -> exchange.getAttributes()
                         .put(CsrfRequestDataValueProcessor.DEFAULT_CSRF_ATTR_NAME, token));
     }
+
 
 }
 

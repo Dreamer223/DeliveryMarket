@@ -1,13 +1,13 @@
 spring:
   application:
-    name: deliveryClientCart
+    name: deliveryOrderCart
   data:
     mongodb:
-      uri: mongodb://localhost:27018/deliveryOrderClient
+      uri: mongodb://localhost:27017/deliveryOrderClient
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8082/realms/delivery
-  server:
-    port: 8085
+server:
+  port: 8085

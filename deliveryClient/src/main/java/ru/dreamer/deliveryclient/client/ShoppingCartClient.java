@@ -8,7 +8,7 @@ public interface ShoppingCartClient {
 
     Flux<ShoppingCart> findAllShoppingCart();
     Mono<ShoppingCart> findByProductId(Long productId);
-    Mono<ShoppingCart> addProductToShoppingCart(Long productId, int count);
-    Mono<Void> removeProductFromShoppingCart(Long productId, String userId);
+    Mono<ShoppingCart> addProductToShoppingCart(Long productId);
+    Mono<Void> removeProductFromShoppingCart(Long productId);
     Mono<Void> removeAllProducts();
 }

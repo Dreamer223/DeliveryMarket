@@ -8,7 +8,7 @@ public interface ShoppingCartService {
 
      Flux<ShoppingCart> findAllByUserId(String userId);
      Mono<ShoppingCart> findByUserIdAndProductId(String userId, Long productId);
-     Mono<ShoppingCart> save(Long productId, String userId, int count);
+     Mono<ShoppingCart> save(Long productId, String userId);
      Mono<Void> deleteByUserIdAndProductId(String userId, Long productId);
      Mono<Void> deleteAllByUserId(String userId);
 }

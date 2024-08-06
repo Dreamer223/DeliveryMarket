@@ -8,7 +8,8 @@
 <a data-th-href="@{/products/list}">Все товары</a>
 <h1>Избранные товары</h1>
 <form>
-    <label>Фильтр: <input type="text" name="filter" data-th-value="${filter}"> <button type="submit">Поиск</button></label>
+    <label>Фильтр: <input type="text" name="filter" data-th-value="${filter}">
+        <button type="submit">Поиск</button></label>
 </form>
 <ul>
     <li data-th-each="product : ${products}">

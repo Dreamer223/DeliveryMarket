@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Корзина</title>
+</head>
+<body>
+<a data-th-href="@{/products/list}">На главную</a>
+<h1>Корзина</h1>
+<form>
+    <label>Фильтр: <input type="text" name="filter" data-th-value="${filter}">
+        <button type="submit">Поиск</button></label>
+</form>
+<ul>
+    <li data-th-each="product : ${products}">
+        <strong>
+            <a data-th-text="${product.name}"
+               data-th-href="@{/products/{productId}(productId=${product.id})}"></a>
+            <
+        </strong>
+        <span class="price" data-th-text="${product.price}+' $'"></span>
+        <p data-th-text="${product.description}"></p>
+
+        <form method="post" data-th-action="@{/products/{productId}/add-to-cart(productId=${product.id})}">
+            <button type="submit">Добавить еще</button>
+        </form>
+
+        <form method="post" data-th-action="@{/products/{productId}/remove-from-cart(productId=${product.id})}">
+            <button type="submit">Удалить</button>
+        </form>
+    </li>
+</ul>
+<div data-th-if="${products.isEmpty()}">
+    <h2>Корзина пуста</h2>
+</div>
+
+<script>
+    function calculateTotal() {
+        // Находим все элементы с классом 'price'
+        const priceElements = document.querySelectorAll('.price');
+        let total = 0;
+
+        // Проходим по каждому элементу и суммируем значения
+        priceElements.forEach(element => {
+            const price = parseFloat(element.textContent);
+            if (!isNaN(price)) {
+                total += price;
+            }
+        });
+
+        // Отображаем общую сумму
+        document.getElementById('totalPrice').textContent = `Общая сумма: ${total.toFixed(2)} $`;
+    }
+
+    window.onload = calculateTotal; // Подсчет суммы при загрузке страницы
+</script>
+<h2 id="totalPrice">Общая сумма: 0.00 $</h2>
+</body>
+</html>

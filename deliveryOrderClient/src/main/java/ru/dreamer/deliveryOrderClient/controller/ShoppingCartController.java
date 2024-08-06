@@ -32,12 +32,11 @@ public class ShoppingCartController {
     }
     @PostMapping
     public Mono<ResponseEntity<ShoppingCart>> addProductToCart(Mono<JwtAuthenticationToken> tokenMono,
-                                                               @Valid @RequestBody Mono<NewShoppingCartPayload> payloadMono,
+                                                               @Valid @RequestBody Mono<NewShoppingCartPayload> productMono,
                                                                UriComponentsBuilder uriBuilder) {
-             return Mono.zip(tokenMono, payloadMono)
+             return Mono.zip(tokenMono, productMono)
                      .flatMap(tuple -> this.shoppingCartService.save(tuple.getT2().productId(),
-                             tuple.getT1().getToken().getSubject(),
-                             tuple.getT2().count()))
+                             tuple.getT1().getToken().getSubject()))
                      .map(shoppingCart -> ResponseEntity
                              .created(uriBuilder.replacePath("shoppingCart/v1/{id}")
                                      .build(shoppingCart.getId()))

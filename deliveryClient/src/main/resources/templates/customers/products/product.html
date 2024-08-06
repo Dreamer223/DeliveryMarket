@@ -21,6 +21,15 @@
           data-th-if="${inFavourite}">
         <button type="submit">Удалить из избранного</button>
     </form>
+    <form method="post" data-th-action="@{/products/{productId}/add-to-cart(productId=${product.id})}"
+          data-th-if="${!inCart}">
+        <button type="submit">Добавить в корзину</button>
+    </form>
+    <form method="post" data-th-action="@{/products/{productId}/remove-from-cart(productId=${product.id})}"
+          data-th-if="${inCart}">
+        <button type="submit">Удалить из корзины</button>
+    </form>
+
     <h2>Отзывы</h2>
     <div data-th-if="${errors}">
         <h3></h3>

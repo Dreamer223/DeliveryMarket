@@ -38,11 +38,11 @@ public class WebClientShoppingCartClient implements ShoppingCartClient {
     }
 
     @Override
-    public Mono<ShoppingCart> addProductToShoppingCart(Long productId, int count) {
+    public Mono<ShoppingCart> addProductToShoppingCart(Long productId) {
         return this.webClient
                 .post()
                 .uri("shoppingCart/v1")
-                .bodyValue(new NewShoppingCartPayload(productId, count))
+                .bodyValue(new NewShoppingCartPayload(productId))
                 .retrieve()
                 .bodyToMono(ShoppingCart.class)
                 .onErrorMap(WebClientResponseException.BadRequest.class, ex -> {
@@ -59,7 +59,7 @@ public class WebClientShoppingCartClient implements ShoppingCartClient {
     }
 
     @Override
-    public Mono<Void> removeProductFromShoppingCart(Long productId, String userId) {
+    public Mono<Void> removeProductFromShoppingCart(Long productId) {
         return this.webClient
                 .delete()
                 .uri("shoppingCart/v1/byUserId/{productId}", productId)

@@ -18,6 +18,4 @@ public class ShoppingCart {
     private UUID id;
     private String userId;
     private Long productId;
-    private int count;
-
 }

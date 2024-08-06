@@ -10,8 +10,8 @@
 	<groupId>ru.dreamer</groupId>
 	<artifactId>deliveryOrderClient</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>deliveryClientCart</name>
-	<description>deliveryClientCart</description>
+	<name>deliveryOrderCart</name>
+	<description>deliveryOrderCart</description>
 	<url/>
 	<licenses>
 		<license/>
