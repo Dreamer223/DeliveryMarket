@@ -40,7 +40,6 @@ public class FavouriteProductRestController {
             @Valid @RequestBody Mono<NewFavouriteProductPayload> payloadMono,
             UriComponentsBuilder uriComponentsBuilder) {
         return Mono.zip(authenticationTokenMono,payloadMono)
-
                 .flatMap(tuple ->this.favouriteProductService.addFavouriteProduct(tuple.getT2().productId(),
                         tuple.getT1().getToken().getSubject()))
                 .map(favouriteProduct -> ResponseEntity

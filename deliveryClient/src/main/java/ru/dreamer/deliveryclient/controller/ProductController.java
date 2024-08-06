@@ -83,6 +83,8 @@ public class ProductController {
                 });
     }
 
+
+
     @ExceptionHandler(NoSuchElementException.class)
     public String handleNoSuchElementException(NoSuchElementException exception, Model model) {
         model.addAttribute("error", exception.getMessage());
@@ -91,7 +93,6 @@ public class ProductController {
 
     @ModelAttribute
     public Mono<CsrfToken> loadCsrfToken(ServerWebExchange exchange) {
-
         return Objects.requireNonNull(exchange.<Mono<CsrfToken>>getAttribute(CsrfToken.class.getName()))
                 .doOnSuccess(token -> exchange.getAttributes()
                         .put(CsrfRequestDataValueProcessor.DEFAULT_CSRF_ATTR_NAME, token));

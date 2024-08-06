@@ -26,5 +26,6 @@ dreamer:
 feedback:
   service:
     uri: http://localhost:8084
-    reviews:
-      uri: http://localhost:8084/feedback-api/productReviews
+shoppingCart:
+  service:
+    uri: http://localhost:8085

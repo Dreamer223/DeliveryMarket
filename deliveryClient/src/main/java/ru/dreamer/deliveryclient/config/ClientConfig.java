@@ -11,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import ru.dreamer.deliveryclient.client.WebClientFavouritesProductClient;
 import ru.dreamer.deliveryclient.client.WebClientProductReviewsClient;
 import ru.dreamer.deliveryclient.client.WebClientProductsClient;
+import ru.dreamer.deliveryclient.client.WebClientShoppingCartClient;
 
 @Configuration
 public class ClientConfig {
@@ -58,6 +59,17 @@ public class ClientConfig {
         return new WebClientFavouritesProductClient(
                 deliveryWebClientBuilder
                         .baseUrl(feedbackBaseUri)
+                        .build());
+    }
+
+    @Bean
+    public WebClientShoppingCartClient webClientShoppingCartClient(
+            @Value("${shoppingCart.service.uri:http://localhost:8085}") String shoppingCartBaseUri,
+            WebClient.Builder deliveryWebClientBuilder
+    ) {
+        return new WebClientShoppingCartClient(
+                deliveryWebClientBuilder
+                        .baseUrl(shoppingCartBaseUri)
                         .build());
     }
 }
