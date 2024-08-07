@@ -23,12 +23,16 @@ public class SecurityBeans {
                                 .hasAuthority("SCOPE_edit_catalogue")
                                 .requestMatchers(HttpMethod.DELETE,"catalogue/products/{productId:\\d+}")
                                 .hasAuthority("SCOPE_edit_catalogue")
+                                .requestMatchers("/actuator/**").hasAuthority("SCOPE_metrics")
                                 .requestMatchers(HttpMethod.GET).permitAll()
                                 .anyRequest().denyAll()
                 )
                 .csrf(CsrfConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .oauth2ResourceServer(oauth2 -> oauth2.
+                        jwt(Customizer.withDefaults()))
+                .oauth2Client(Customizer.withDefaults())
                 .build();
     }
 }

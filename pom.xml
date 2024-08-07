@@ -27,6 +27,7 @@
 		<module>deliveryService</module>
 		<module>deliveryFeedbackService</module>
 		<module>deliveryOrderClient</module>
+		<module>AdminServer</module>
 	</modules>
 	<scm>
 		<connection/>

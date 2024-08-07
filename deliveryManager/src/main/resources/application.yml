@@ -6,8 +6,19 @@ dreamer:
 server:
     port: 8080
 spring:
+  boot:
+    admin:
+      client:
+        url: http://localhost:8086
+        instance:
+          name: Менеджерское приложение
+          service-host-type: ip
+        enabled: true
   security:
     oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/delivery
       client:
           provider:
             keycloak:
@@ -22,4 +33,21 @@ spring:
                     - view_catalogue
                     - edit_catalogue
                     - microprofile-jwt
+              metrics:
+                provider: keycloak
+                client-id: delivery-market-metrics-client
+                client-secret: fDCVjmif6Pcjjgm4UBFEPj1GBzvnGywW
+                authorization-grant-type: client_credentials
+                scope:
+                  - metrics_server
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 

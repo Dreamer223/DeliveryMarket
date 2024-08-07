@@ -5,10 +5,7 @@ import org.springframework.security.web.reactive.result.view.CsrfRequestDataValu
 import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 import ru.dreamer.deliveryclient.client.ProductsClient;
@@ -37,6 +34,10 @@ public class ShoppingCartController {
                         .doOnNext(products -> model.addAttribute("products", products))
                 .thenReturn("customers/shopping-cart/list"));
 
+    }
+    @PostMapping("clear")
+    public Mono<String> removeFromCart() {
+        return shoppingCartClient.removeAllProducts().thenReturn("redirect:/cart");
     }
     @ModelAttribute
     public Mono<CsrfToken> loadCsrfToken(ServerWebExchange exchange) {

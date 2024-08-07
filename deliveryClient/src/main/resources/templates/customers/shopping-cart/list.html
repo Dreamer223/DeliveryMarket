@@ -55,5 +55,8 @@
     window.onload = calculateTotal; // Подсчет суммы при загрузке страницы
 </script>
 <h2 id="totalPrice">Общая сумма: 0.00 $</h2>
+<form method="post" data-th-action="@{/shopping-cart/clear}">
+    <button type="submit">Очистить корзину</button>
+</form>
 </body>
 </html>

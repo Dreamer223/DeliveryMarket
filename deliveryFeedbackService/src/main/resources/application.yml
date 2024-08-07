@@ -4,11 +4,40 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/deliveryFeedbackService
+  boot:
+    admin:
+      client:
+        url: http://localhost:8086
+        instance:
+          name: Сервис отзывов
+          service-host-type: ip
+        enabled: true
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8082/realms/delivery
+      client:
+        registration:
+          keycloak:
+            clientId: feedback-service-metrics-client
+            clientSecret: 0wvyRtzhDzH6z57zxLbzZ1baXqePt752
+            authorization-grant-type: client_credentials
+            scope:
+              - metrics_server
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8082/realms/delivery
 server:
   port: 8084
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 

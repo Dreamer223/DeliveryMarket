@@ -1,3 +1,5 @@
+server:
+  port: 8081
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/catalogue
@@ -9,8 +11,36 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8082/realms/delivery
+      client:
+        registration:
+          keycloak:
+            clientId: catalogue-service-metrics-client
+            clientSecret: srsbgBf7zc6rYkNDhEj3rSLnOVbAtJtv
+            authorization-grant-type: client_credentials
+            scope:
+              - metrics_server
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8082/realms/delivery
   liquibase:
     change-log: db/changelog/db.changelog-master.yml
     enabled: true
-server:
-  port: 8081
+  boot:
+    admin:
+      client:
+        url: http://localhost:8086
+        instance:
+          name: Сервис продуктов
+          service-host-type: ip
+        enabled: true
+
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
