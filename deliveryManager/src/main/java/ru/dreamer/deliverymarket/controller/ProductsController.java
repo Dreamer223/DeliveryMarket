@@ -1,7 +1,9 @@
 package ru.dreamer.deliverymarket.controller;
 
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,12 +34,14 @@ public class ProductsController {
 
     @PostMapping("create")
     public String createProduct(NewProductPayload payload,
-                                Model model) {
+                                Model model,
+                                HttpServletResponse response) {
         try {
             Product product = this.productsRestClient.createProduct(payload.name(), payload.category(),
                     payload.description(), payload.price());
             return "redirect:/catalogue/products/%d".formatted(product.id());
         } catch (BadRequestException exception) {
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
             model.addAttribute("payload", payload);
             model.addAttribute("errors", exception.getErrors());
             return "catalogue/products/new_product";

@@ -1,0 +1,4 @@
+dreamer:
+  services:
+    catalogue:
+      uri: http://localhost:9090

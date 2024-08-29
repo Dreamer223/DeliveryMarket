@@ -26,9 +26,9 @@ public class DefaultShoppingCartService implements ShoppingCartService {
     }
 
     @Override
-    public Mono<ShoppingCart> save(Long productId, String userId) {
+    public Mono<ShoppingCart> save(Long productId, String userId, Double price) {
         return shoppingCartRepository.save(new ShoppingCart(UUID.randomUUID(),
-                userId, productId));
+                userId, productId, price));
     }
 
     @Override

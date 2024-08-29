@@ -18,21 +18,25 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class OAuth2Client implements ClientHttpRequestInterceptor {
 
-    private final OAuth2AuthorizedClientManager oAuth2AuthorizedClientService;
-    private final String token;
+    private final OAuth2AuthorizedClientManager authorizedClientManager;
+
+    private final String registrationId;
 
     @Setter
     private SecurityContextHolderStrategy securityContextHolderStrategy =
             SecurityContextHolder.getContextHolderStrategy();
 
     @Override
-    public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
-        if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)){
-            OAuth2AuthorizedClient authorize = this.oAuth2AuthorizedClientService.authorize(OAuth2AuthorizeRequest.withClientRegistrationId(this.token)
-                    .principal(this.securityContextHolderStrategy.getContext().getAuthentication())
-                    .build());
-            request.getHeaders().setBearerAuth(authorize.getAccessToken().getTokenValue());
+    public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
+            throws IOException {
+        if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+            OAuth2AuthorizedClient authorizedClient = this.authorizedClientManager.authorize(
+                    OAuth2AuthorizeRequest.withClientRegistrationId(this.registrationId)
+                            .principal(this.securityContextHolderStrategy.getContext().getAuthentication())
+                            .build());
+            request.getHeaders().setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
         }
+
         return execution.execute(request, body);
     }
 }

@@ -90,13 +90,16 @@ public class ProductController {
     @PostMapping("add-to-cart")
     public Mono<String> addProductToShoppingCart(@ModelAttribute("product") Mono<Product> productMono) {
         return productMono
-                .map(Product::id)
-                .flatMap(id -> this.shoppingCartClient.addProductToShoppingCart(id)
+                .flatMap( product -> {
+                    Long id = product.id();
+                    Double price = product.price();
+        return this.shoppingCartClient.addProductToShoppingCart(id, price)
                         .thenReturn("redirect:/products/%d".formatted(id))
                         .onErrorResume(exception -> {
                             log.error(exception.getMessage(), exception);
                             return Mono.just("redirect:/products/%d".formatted(id));
-                        }));
+                        });
+                });
 
     }
     @PostMapping("remove-from-cart")

@@ -36,7 +36,7 @@ public class ShoppingCartController {
                                                                UriComponentsBuilder uriBuilder) {
              return Mono.zip(tokenMono, productMono)
                      .flatMap(tuple -> this.shoppingCartService.save(tuple.getT2().productId(),
-                             tuple.getT1().getToken().getSubject()))
+                             tuple.getT1().getToken().getSubject(), tuple.getT2().price()))
                      .map(shoppingCart -> ResponseEntity
                              .created(uriBuilder.replacePath("shoppingCart/v1/{id}")
                                      .build(shoppingCart.getId()))

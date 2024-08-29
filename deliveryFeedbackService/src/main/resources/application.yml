@@ -1,6 +1,6 @@
 spring:
   application:
-    name:deliveryFeedbackService
+    name: deliveryFeedbackService
   data:
     mongodb:
       uri: mongodb://localhost:27017/deliveryFeedbackService
@@ -40,4 +40,10 @@ management:
     web:
       exposure:
         include: '*'
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
 

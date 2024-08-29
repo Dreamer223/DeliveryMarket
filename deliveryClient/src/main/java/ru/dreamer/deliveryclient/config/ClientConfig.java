@@ -1,6 +1,7 @@
 package ru.dreamer.deliveryclient.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.loadbalancer.reactive.ReactorLoadBalancerExchangeFilterFunction;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -43,22 +44,26 @@ public class ClientConfig {
     @Bean
     public WebClientProductReviewsClient webClientProductReviewsClient(
             @Value("${feedback.service.uri:http://localhost:8084}") String feedbackBaseUri,
-            WebClient.Builder deliveryWebClientBuilder
+            WebClient.Builder deliveryWebClientBuilder,
+            ReactorLoadBalancerExchangeFilterFunction loadBalancerExchangeFilterFunction
     ) {
         return new WebClientProductReviewsClient(
                 deliveryWebClientBuilder
                         .baseUrl(feedbackBaseUri)
+                        .filter(loadBalancerExchangeFilterFunction)
                         .build());
     }
 
     @Bean
     public WebClientFavouritesProductClient webClientFavouritesProductClient(
             @Value("${feedback.service.uri:http://localhost:8084}") String feedbackBaseUri,
-            WebClient.Builder deliveryWebClientBuilder
+            WebClient.Builder deliveryWebClientBuilder,
+            ReactorLoadBalancerExchangeFilterFunction loadBalancerExchangeFilterFunction
     ) {
         return new WebClientFavouritesProductClient(
                 deliveryWebClientBuilder
                         .baseUrl(feedbackBaseUri)
+                        .filter(loadBalancerExchangeFilterFunction)
                         .build());
     }
 
