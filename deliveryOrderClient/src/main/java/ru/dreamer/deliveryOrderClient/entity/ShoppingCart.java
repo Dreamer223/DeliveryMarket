@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -17,6 +18,6 @@ public class ShoppingCart {
     @Id
     private UUID id;
     private String userId;
-    private Long productId;
+    private List<Long> productId;
     private Double price;
 }
